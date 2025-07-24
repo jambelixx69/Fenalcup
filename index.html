@@ -14,22 +14,25 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <style>
-        /* Estilos personalizados para complementar Tailwind */
+        /* Estilos personalizados */
+        html {
+            scroll-behavior: smooth;
+        }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8f9fa; /* Un gris muy claro para el fondo */
+            background-color: #f8fafc; /* Gris más claro */
         }
         .hero-bg {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://placehold.co/600x400/4F7942/FFFFFF?text=Cultivo+de+Pl%C3%A1tano');
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.pexels.com/photos/7990933/pexels-photo-7990933.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
             background-size: cover;
             background-position: center;
         }
         .card {
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
         }
         .whatsapp-float {
             position: fixed;
@@ -42,8 +45,8 @@
             border-radius: 50px;
             text-align: center;
             font-size: 30px;
-            box-shadow: 2px 2px 3px #999;
-            z-index: 1000; /* Asegurarse que esté sobre el mapa */
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            z-index: 1000;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -52,50 +55,62 @@
         .whatsapp-float:hover {
             transform: scale(1.1);
         }
-        /* Asegura que el mapa tenga una altura definida */
         #map {
-            height: 450px;
+            height: 500px;
             border-radius: 0.5rem;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        /* Estilo para el enlace activo del menú */
+        .active-link {
+            color: #166534; /* green-800 */
+            font-weight: 700;
+            border-bottom: 2px solid #16a34a; /* green-600 */
+        }
+        /* Estilos para el acordeón de FAQs */
+        .faq-question {
+            cursor: pointer;
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
         }
     </style>
 </head>
 <body class="text-gray-800">
 
-    <!-- Encabezado -->
-    <header class="bg-white shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+    <!-- Encabezado Fijo (Sticky) -->
+    <header id="header" class="bg-white shadow-md sticky top-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <!-- Logo -->
-            <div class="flex items-center">
-                <svg class="h-8 w-8 text-green-700 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
-                </svg>
+            <a href="#" class="flex items-center" aria-label="Ir al inicio de FENALCUP">
+                <svg class="h-8 w-8 text-green-700 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg>
                 <h1 class="text-xl font-bold text-green-800">FENALCUP</h1>
-            </div>
+            </a>
 
             <!-- Menú de Escritorio -->
-            <nav class="hidden md:flex items-center space-x-6">
-                <a href="#" class="text-gray-600 hover:text-green-700 font-semibold">Inicio</a>
-                <a href="#quienes-somos" class="text-gray-600 hover:text-green-700 font-semibold">¿Quiénes Somos?</a>
-                <a href="#mapa-seccion" class="text-gray-600 hover:text-green-700 font-semibold">Presencia Nacional</a>
-                <a href="#herramientas" class="text-gray-600 hover:text-green-700 font-semibold">Herramientas</a>
-                <a href="#noticias" class="text-gray-600 hover:text-green-700 font-semibold">Noticias</a>
-                <a href="#contacto" class="text-gray-600 hover:text-green-700 font-semibold">Contacto</a>
+            <nav id="nav-menu" class="hidden md:flex items-center space-x-8">
+                <a href="#inicio" class="text-gray-600 hover:text-green-700 font-semibold pb-1">Inicio</a>
+                <a href="#quienes-somos" class="text-gray-600 hover:text-green-700 font-semibold pb-1">¿Quiénes Somos?</a>
+                <a href="#mapa-seccion" class="text-gray-600 hover:text-green-700 font-semibold pb-1">Presencia</a>
+                <a href="#herramientas" class="text-gray-600 hover:text-green-700 font-semibold pb-1">Herramientas</a>
+                <a href="#faq" class="text-gray-600 hover:text-green-700 font-semibold pb-1">Preguntas</a>
+                <a href="#contacto" class="text-gray-600 hover:text-green-700 font-semibold pb-1">Contacto</a>
             </nav>
 
             <!-- Botón del Menú Móvil -->
-            <button id="menu-btn" class="md:hidden">
+            <button id="menu-btn" class="md:hidden" aria-label="Abrir menú de navegación">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
             </button>
         </div>
         
-        <!-- Menú móvil desplegable (oculto por defecto) -->
+        <!-- Menú móvil desplegable -->
         <nav id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-4 border-t">
-            <a href="#" class="block py-2 px-2 text-gray-700 hover:bg-gray-100 rounded">Inicio</a>
+            <a href="#inicio" class="block py-2 px-2 text-gray-700 hover:bg-gray-100 rounded">Inicio</a>
             <a href="#quienes-somos" class="block py-2 px-2 text-gray-700 hover:bg-gray-100 rounded">¿Quiénes Somos?</a>
             <a href="#mapa-seccion" class="block py-2 px-2 text-gray-700 hover:bg-gray-100 rounded">Presencia Nacional</a>
             <a href="#herramientas" class="block py-2 px-2 text-gray-700 hover:bg-gray-100 rounded">Herramientas</a>
-            <a href="#noticias" class="block py-2 px-2 text-gray-700 hover:bg-gray-100 rounded">Noticias</a>
+            <a href="#faq" class="block py-2 px-2 text-gray-700 hover:bg-gray-100 rounded">Preguntas Frecuentes</a>
             <a href="#contacto" class="block py-2 px-2 text-gray-700 hover:bg-gray-100 rounded">Contacto</a>
         </nav>
     </header>
@@ -103,199 +118,314 @@
     <!-- Contenido Principal -->
     <main>
         <!-- Sección de Bienvenida (Hero) -->
-        <section class="hero-bg text-white">
-            <div class="container mx-auto px-4 py-16 text-center">
-                <h2 class="text-3xl md:text-4xl font-bold leading-tight mb-4">Calidad y Humildad: <br>El Corazón del Plátano Colombiano</h2>
-                <p class="text-lg md:text-xl mb-8">La unión que fortalece a miles de familias platanicultoras.</p>
+        <section id="inicio" class="hero-bg text-white">
+            <div class="container mx-auto px-4 py-24 md:py-32 text-center">
+                <h2 class="text-4xl md:text-6xl font-bold leading-tight mb-4">Calidad y Humanidad</h2>
+                <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto">La unión que fortalece a miles de familias platanicultoras en Colombia.</p>
             </div>
         </section>
 
         <!-- Datos de Impacto -->
         <section class="bg-green-700 text-white">
-            <div class="container mx-auto px-4 py-8">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                    <div><p class="text-2xl font-bold">7.524</p><p class="text-sm">Familias</p></div>
-                    <div><p class="text-2xl font-bold">225</p><p class="text-sm">Organizaciones</p></div>
-                    <div><p class="text-2xl font-bold">85</p><p class="text-sm">Municipios</p></div>
-                    <div><p class="text-2xl font-bold">17</p><p class="text-sm">Departamentos</p></div>
+            <div class="container mx-auto px-4 py-10">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                    <div><p class="text-3xl font-bold">7.524</p><p>Familias</p></div>
+                    <div><p class="text-3xl font-bold">225</p><p>Organizaciones</p></div>
+                    <div><p class="text-3xl font-bold">85</p><p>Municipios</p></div>
+                    <div><p class="text-3xl font-bold">17</p><p>Departamentos</p></div>
                 </div>
             </div>
         </section>
         
         <!-- Quiénes Somos -->
-        <section id="quienes-somos" class="bg-white">
-            <div class="container mx-auto px-4 py-12">
-                <h3 class="text-2xl font-bold text-center mb-4 text-green-800">Nuestra Historia: Nacimos de la Tierra y la Necesidad</h3>
-                <div class="text-center text-gray-700 max-w-3xl mx-auto space-y-4">
-                    <p>No somos una federación creada desde un escritorio. FENALCUP nació del esfuerzo y la unión de las bases campesinas, en los territorios donde el plátano es más que un cultivo: es el sustento, la identidad y la vida para miles de familias.</p>
-                    <p>A pesar de nuestra importancia para la seguridad alimentaria y la economía rural, hemos enfrentado el abandono. Cada desafío y cada necesidad ignorada ha forjado nuestro carácter. Existimos para luchar por el reconocimiento y el apoyo que nuestro sector merece, demostrando que la unión del campo es la fuerza que transforma la realidad.</p>
+        <section id="quienes-somos" class="bg-white py-20">
+            <div class="container mx-auto px-4">
+                <h3 class="text-3xl font-bold text-center mb-4 text-green-800">Nacimos de la Tierra y la Necesidad</h3>
+                <div class="text-center text-gray-600 text-lg max-w-3xl mx-auto space-y-6">
+                    <p>FENALCUP no es una federación creada desde un escritorio. Nacimos del esfuerzo y la unión de las bases campesinas, en los territorios donde el plátano es más que un cultivo: es el sustento, la identidad y la vida.</p>
+                    <p>Frente al abandono, cada desafío ha forjado nuestro carácter. Existimos para luchar por el reconocimiento que nuestro sector merece, demostrando que la unión del campo es la fuerza que transforma la realidad.</p>
                 </div>
             </div>
         </section>
 
         <!-- Mapa Interactivo -->
-        <section id="mapa-seccion" class="bg-gray-100">
-            <div class="container mx-auto px-4 py-12">
-                <h3 class="text-2xl font-bold text-center mb-4 text-green-800">Nuestra Presencia Nacional</h3>
-                <p class="text-center text-gray-600 max-w-2xl mx-auto mb-8">Estamos presentes en 17 departamentos, uniendo a 225 organizaciones en 85 municipios. Cada punto en el mapa es una comunidad de platanicultores que trabaja por un futuro mejor.</p>
+        <section id="mapa-seccion" class="bg-gray-50 py-20">
+            <div class="container mx-auto px-4">
+                <h3 class="text-3xl font-bold text-center mb-4 text-green-800">Nuestra Presencia Nacional</h3>
+                <p class="text-center text-gray-600 text-lg max-w-3xl mx-auto mb-12">Cada punto en el mapa es una comunidad que trabaja por un futuro mejor. Haga clic para ver el impacto por departamento.</p>
                 <div id="map" class="w-full"></div>
             </div>
         </section>
 
-        <!-- Secciones Principales (Herramientas) -->
-        <section id="herramientas" class="container mx-auto px-4 py-12">
-            <h3 class="text-2xl font-bold text-center mb-8">Una Herramienta para Nuestra Gente</h3>
-            <div class="grid grid-cols-2 gap-4">
-                <a href="#" class="card bg-white p-4 rounded-lg shadow text-center">
-                    <div class="flex justify-center mb-2"><svg class="h-10 w-10 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg></div>
-                    <h4 class="font-semibold">Apoyo Técnico</h4><p class="text-xs text-gray-500">Guías y consejos</p>
-                </a>
-                <a href="#" class="card bg-white p-4 rounded-lg shadow text-center">
-                    <div class="flex justify-center mb-2"><svg class="h-10 w-10 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.75A.75.75 0 013 4.5h.75m0 0H21m-9 12.75h5.25m0 0l-1.096-1.096M15 18.75l-1.096 1.096m0 0l-1.096-1.096M15 18.75l1.096 1.096M15 18.75l-1.096-1.096M9.75 5.25h1.5a.75.75 0 01.75.75v3a.75.75 0 01-.75.75h-1.5a.75.75 0 01-.75-.75v-3a.75.75 0 01.75-.75z" /></svg></div>
-                    <h4 class="font-semibold">Precios y Mercado</h4><p class="text-xs text-gray-500">Información actual</p>
-                </a>
-                <a id="noticias" href="#" class="card bg-white p-4 rounded-lg shadow text-center">
-                    <div class="flex justify-center mb-2"><svg class="h-10 w-10 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 18V6.375c0-.621.504-1.125 1.125-1.125H9.75" /></svg></div>
-                    <h4 class="font-semibold">Noticias y Gestión</h4><p class="text-xs text-gray-500">Lo que hacemos</p>
-                </a>
-                <a href="#" class="card bg-white p-4 rounded-lg shadow text-center">
-                    <div class="flex justify-center mb-2"><svg class="h-10 w-10 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
-                    <h4 class="font-semibold">Calidad</h4><p class="text-xs text-gray-500">Guía de certificación</p>
-                </a>
+        <!-- Herramientas Interactivas -->
+        <section id="herramientas" class="bg-white py-20">
+            <div class="container mx-auto px-4">
+                <h3 class="text-3xl font-bold text-center mb-12 text-green-800">Herramientas para el Agricultor</h3>
+                <div class="grid md:grid-cols-3 gap-8 items-start">
+                    <!-- Contador de Consultas -->
+                    <div class="md:col-span-1 bg-green-50 p-6 rounded-lg text-center">
+                        <h4 class="font-bold text-xl text-green-800 mb-2">Consultorio Técnico</h4>
+                        <p class="text-gray-600 mb-4">Apoyo directo para resolver sus dudas sobre el cultivo.</p>
+                        <div class="text-5xl font-bold text-green-600 my-4" id="consultas-counter">1247</div>
+                        <p class="font-semibold text-gray-700">Consultas resueltas</p>
+                        <a href="#" class="mt-6 inline-block bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition-colors" aria-label="Iniciar una consulta técnica">
+                            Hacer una Consulta
+                        </a>
+                    </div>
+                    <!-- Comparador de Precios -->
+                    <div class="md:col-span-2">
+                        <h4 class="font-bold text-xl text-gray-800 mb-4">Precios del Plátano (Proyección 2025)</h4>
+                        <div class="flex flex-wrap gap-4 mb-4">
+                            <select id="region-filter" class="p-2 border rounded-md" aria-label="Filtrar por región">
+                                <option value="all">Todas las Regiones</option>
+                                <option value="Antioquia">Antioquia</option>
+                                <option value="Eje Cafetero">Eje Cafetero</option>
+                                <option value="Llanos Orientales">Llanos Orientales</option>
+                                <option value="Costa Caribe">Costa Caribe</option>
+                            </select>
+                            <select id="quality-filter" class="p-2 border rounded-md" aria-label="Filtrar por calidad">
+                                <option value="all">Todas las Calidades</option>
+                                <option value="Exportación">Exportación</option>
+                                <option value="Primera">Primera</option>
+                                <option value="Corriente">Corriente</option>
+                            </select>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full bg-white border rounded-lg">
+                                <thead class="bg-gray-200">
+                                    <tr>
+                                        <th class="p-3 text-left font-semibold">Región</th>
+                                        <th class="p-3 text-left font-semibold">Calidad</th>
+                                        <th class="p-3 text-left font-semibold">Precio/Kg (COP)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="price-table-body">
+                                    <!-- Filas de precios se insertarán aquí por JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- Consultorio Técnico CTA -->
-        <section class="bg-green-50">
-            <div class="container mx-auto px-4 py-12 text-center">
-                <h3 class="text-xl font-bold mb-2">¿Tiene una duda sobre su cultivo?</h3>
-                <p class="mb-4 text-gray-600">Envíenos su pregunta y una foto. Nuestro equipo técnico le responderá.</p>
-                <a href="#" class="bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition-colors">
-                    Iniciar Consulta Técnica
-                </a>
+        <!-- Preguntas Frecuentes (FAQ) -->
+        <section id="faq" class="bg-gray-50 py-20">
+            <div class="container mx-auto px-4">
+                <h3 class="text-3xl font-bold text-center mb-12 text-green-800">Preguntas Frecuentes</h3>
+                <div class="max-w-3xl mx-auto space-y-4" id="faq-container">
+                    <!-- Las preguntas se insertarán aquí por JS -->
+                </div>
             </div>
         </section>
     </main>
 
-    <!-- Botón Flotante de WhatsApp -->
-    <a id="contacto" href="https://wa.me/NUMERODETELEFONO?text=Hola,%20quisiera%20información%20sobre%20FENALCUP" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
-        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.55C8.71 21.33 10.35 21.8 12.04 21.8H12.05C17.5 21.8 21.95 17.35 21.95 11.9C21.95 9.28 20.94 6.8 19.19 4.99C17.44 3.19 14.95 2 12.04 2ZM12.05 20.1C10.59 20.1 9.16 19.68 7.96 18.9L7.62 18.7L3.98 19.7L5.03 16.17L4.81 15.82C3.97 14.57 3.53 13.14 3.53 11.91C3.53 7.36 7.39 3.6 12.05 3.6C14.23 3.6 16.22 4.48 17.79 6.05C19.36 7.62 20.24 9.61 20.24 11.9C20.24 16.45 16.5 20.1 12.05 20.1ZM16.54 14.53C16.3 14.41 15.13 13.85 14.91 13.77C14.69 13.69 14.53 13.65 14.38 13.89C14.23 14.13 13.75 14.69 13.58 14.85C13.41 15.01 13.25 15.05 13 14.93C12.75 14.81 11.91 14.54 10.92 13.64C10.12 12.91 9.58 12.03 9.42 11.79C9.26 11.55 9.38 11.45 9.5 11.33C9.61 11.22 9.75 11.05 9.87 10.9C10 10.75 10.04 10.63 10.12 10.47C10.2 10.31 10.16 10.19 10.1 10.07C10.04 9.95 9.59 8.78 9.41 8.34C9.24 7.9 9.06 7.94 8.92 7.93H8.52C8.38 7.93 8.14 7.99 7.94 8.19C7.74 8.39 7.26 8.83 7.26 9.95C7.26 11.07 7.98 12.15 8.1 12.27C8.22 12.39 9.6 14.64 11.85 15.58C12.31 15.78 12.65 15.9 12.91 16C13.35 16.14 13.73 16.12 14.03 16.06C14.37 15.98 15.41 15.39 15.61 14.81C15.81 14.23 15.81 13.77 15.75 13.65C15.69 13.53 15.57 13.47 15.33 13.35C15.09 13.23 16.78 14.65 16.54 14.53Z"/>
-        </svg>
-    </a>
-
     <!-- Pie de Página -->
-    <footer class="bg-gray-800 text-white">
-        <div class="container mx-auto px-4 py-8 text-center">
-            <p class="font-bold">FENALCUP</p>
+    <footer id="contacto" class="bg-gray-800 text-white">
+        <div class="container mx-auto px-4 py-16 text-center">
+            <p class="font-bold text-xl">FENALCUP</p>
             <p class="text-sm text-gray-400 mt-2 px-2">FEDERACION NACIONAL DE CULTIVADORES Y PRODUCTORES DE COLOMBIA – FENALCUP</p>
             
-            <div class="flex justify-center space-x-6 mt-6">
-                <a href="#" aria-label="Facebook de FENALCUP" class="text-gray-400 hover:text-white transition-colors">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v7.005C18.343 21.128 22 16.991 22 12z" />
-                    </svg>
-                </a>
-                <a href="#" aria-label="Instagram de FENALCUP" class="text-gray-400 hover:text-white transition-colors">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.585-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.585-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.07-1.645-.07-4.85s.012-3.585.07-4.85c.149-3.225 1.664-4.771 4.919-4.919C8.415 2.175 8.796 2.163 12 2.163zm0 1.802c-3.143 0-3.505.012-4.73.068-2.693.123-3.996 1.426-4.12 4.12C3.12 9.495 3.108 9.858 3.108 12s.012 2.505.068 3.73c.123 2.693 1.426 3.996 4.12 4.12 1.225.056 1.587.068 4.73.068s3.505-.012 4.73-.068c2.693-.123 3.996-1.426 4.12-4.12.056-1.225.068-1.587.068-4.73s-.012-2.505-.068-3.73c-.123-2.693-1.426-3.996-4.12-4.12C15.505 3.975 15.143 3.965 12 3.965zM12 6.837c-2.846 0-5.163 2.317-5.163 5.163s2.317 5.163 5.163 5.163 5.163-2.317 5.163-5.163-2.317-5.163-5.163-5.163zm0 8.529c-1.856 0-3.366-1.51-3.366-3.366s1.51-3.366 3.366-3.366 3.366 1.51 3.366 3.366-1.51 3.366-3.366 3.366zm6.406-6.845c-.796 0-1.441.645-1.441 1.44s.645 1.441 1.441 1.441 1.441-.645 1.441-1.441-.645-1.44-1.441-1.44z"/>
-                    </svg>
-                </a>
+            <div class="flex justify-center space-x-6 mt-8 mb-8">
+                <a href="#" aria-label="Facebook de FENALCUP" class="text-gray-400 hover:text-white transition-colors"><svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v7.005C18.343 21.128 22 16.991 22 12z" /></svg></a>
+                <a href="#" aria-label="Instagram de FENALCUP" class="text-gray-400 hover:text-white transition-colors"><svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.585-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.585-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.07-1.645-.07-4.85s.012-3.585.07-4.85c.149-3.225 1.664-4.771 4.919-4.919C8.415 2.175 8.796 2.163 12 2.163zm0 1.802c-3.143 0-3.505.012-4.73.068-2.693.123-3.996 1.426-4.12 4.12C3.12 9.495 3.108 9.858 3.108 12s.012 2.505.068 3.73c.123 2.693 1.426 3.996 4.12 4.12 1.225.056 1.587.068 4.73.068s3.505-.012 4.73-.068c2.693-.123 3.996-1.426 4.12-4.12.056-1.225.068-1.587.068-4.73s-.012-2.505-.068-3.73c-.123-2.693-1.426-3.996-4.12-4.12C15.505 3.975 15.143 3.965 12 3.965zM12 6.837c-2.846 0-5.163 2.317-5.163 5.163s2.317 5.163 5.163 5.163 5.163-2.317 5.163-5.163-2.317-5.163-5.163-5.163zm0 8.529c-1.856 0-3.366-1.51-3.366-3.366s1.51-3.366 3.366-3.366 3.366 1.51 3.366 3.366-1.51 3.366-3.366 3.366zm6.406-6.845c-.796 0-1.441.645-1.441 1.44s.645 1.441 1.441 1.441 1.441-.645 1.441-1.441-.645-1.44-1.441-1.44z"/></svg></a>
             </div>
-
             <p class="text-xs text-gray-500 mt-6">&copy; 2025 FENALCUP. Todos los derechos reservados.</p>
         </div>
     </footer>
+    
+    <!-- Botón Flotante de WhatsApp -->
+    <a href="https://wa.me/NUMERODETELEFONO?text=Hola,%20quisiera%20información%20sobre%20FENALCUP" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
+        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.55C8.71 21.33 10.35 21.8 12.04 21.8H12.05C17.5 21.8 21.95 17.35 21.95 11.9C21.95 9.28 20.94 6.8 19.19 4.99C17.44 3.19 14.95 2 12.04 2ZM12.05 20.1C10.59 20.1 9.16 19.68 7.96 18.9L7.62 18.7L3.98 19.7L5.03 16.17L4.81 15.82C3.97 14.57 3.53 13.14 3.53 11.91C3.53 7.36 7.39 3.6 12.05 3.6C14.23 3.6 16.22 4.48 17.79 6.05C19.36 7.62 20.24 9.61 20.24 11.9C20.24 16.45 16.5 20.1 12.05 20.1ZM16.54 14.53C16.3 14.41 15.13 13.85 14.91 13.77C14.69 13.69 14.53 13.65 14.38 13.89C14.23 14.13 13.75 14.69 13.58 14.85C13.41 15.01 13.25 15.05 13 14.93C12.75 14.81 11.91 14.54 10.92 13.64C10.12 12.91 9.58 12.03 9.42 11.79C9.26 11.55 9.38 11.45 9.5 11.33C9.61 11.22 9.75 11.05 9.87 10.9C10 10.75 10.04 10.63 10.12 10.47C10.2 10.31 10.16 10.19 10.1 10.07C10.04 9.95 9.59 8.78 9.41 8.34C9.24 7.9 9.06 7.94 8.92 7.93H8.52C8.38 7.93 8.14 7.99 7.94 8.19C7.74 8.39 7.26 8.83 7.26 9.95C7.26 11.07 7.98 12.15 8.1 12.27C8.22 12.39 9.6 14.64 11.85 15.58C12.31 15.78 12.65 15.9 12.91 16C13.35 16.14 13.73 16.12 14.03 16.06C14.37 15.98 15.41 15.39 15.61 14.81C15.81 14.23 15.81 13.77 15.75 13.65C15.69 13.53 15.57 13.47 15.33 13.35C15.09 13.23 16.78 14.65 16.54 14.53Z"/></svg>
+    </a>
 
     <script>
-        // Script para el menú móvil
+    document.addEventListener('DOMContentLoaded', function () {
+        // --- Lógica del Menú Móvil ---
         const menuBtn = document.getElementById('menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
-        menuBtn.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); });
+        menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
         document.querySelectorAll('#mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => { mobileMenu.classList.add('hidden'); });
+            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
         });
 
-        // Script para el mapa interactivo de Leaflet.js
-        document.addEventListener('DOMContentLoaded', function () {
-            const map = L.map('map').setView([4.5709, -74.2973], 5.5);
+        // --- Lógica del Indicador de Sección Activa en Menú ---
+        const sections = document.querySelectorAll('main section');
+        const navLinks = document.querySelectorAll('#nav-menu a');
 
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
-
-            const greenIcon = L.divIcon({
-                className: 'custom-div-icon',
-                html: "<div style='background-color:#16a34a;width:10px;height:10px;border-radius:50%;border:2px solid #fff;'></div>",
-                iconSize: [10, 10],
-                iconAnchor: [5, 5]
-            });
-            
-            // Límites geográficos aproximados de Colombia
-            const colombiaBounds = {
-                minLat: -4.22,
-                maxLat: 12.46,
-                minLon: -79.0,
-                maxLon: -66.85
-            };
-            
-            // Lista de 85 municipios con coordenadas reales para una distribución más precisa
-            const municipios = [
-                { name: "Apartadó", lat: 7.88, lon: -76.62 }, { name: "Armenia", lat: 4.53, lon: -75.68 },
-                { name: "Barrancabermeja", lat: 7.06, lon: -73.85 }, { name: "Bucaramanga", lat: 7.12, lon: -73.12 },
-                { name: "Cali", lat: 3.45, lon: -76.53 }, { name: "Cartagena", lat: 10.39, lon: -75.47 },
-                { name: "Cúcuta", lat: 7.89, lon: -72.5 }, { name: "Florencia", lat: 1.61, lon: -75.6 },
-                { name: "Ibagué", lat: 4.43, lon: -75.23 }, { name: "Manizales", lat: 5.06, lon: -75.51 },
-                { name: "Medellín", lat: 6.24, lon: -75.57 }, { name: "Montería", lat: 8.74, lon: -75.88 },
-                { name: "Neiva", lat: 2.92, lon: -75.28 }, { name: "Pasto", lat: 1.21, lon: -77.27 },
-                { name: "Pereira", lat: 4.81, lon: -75.69 }, { name: "Popayán", lat: 2.44, lon: -76.61 },
-                { name: "Quibdó", lat: 5.69, lon: -76.65 }, { name: "Riohacha", lat: 11.54, lon: -72.9 },
-                { name: "Santa Marta", lat: 11.24, lon: -74.19 }, { name: "Sincelejo", lat: 9.3, lon: -75.39 },
-                { name: "Tunja", lat: 5.53, lon: -73.36 }, { name: "Valledupar", lat: 10.46, lon: -73.25 },
-                { name: "Villavicencio", lat: 4.14, lon: -73.62 }, { name: "Yopal", lat: 5.33, lon: -72.39 },
-                { name: "Saravena", lat: 6.95, lon: -71.87 }, { name: "Tame", lat: 6.46, lon: -71.74 },
-                { name: "Aguachica", lat: 8.3, lon: -73.61 }, { name: "Ocaña", lat: 8.23, lon: -73.35 },
-                { name: "Pitalito", lat: 1.85, lon: -76.04 }, { name: "Garzón", lat: 2.19, lon: -75.62 },
-                { name: "La Dorada", lat: 5.45, lon: -74.66 }, { name: "Sogamoso", lat: 5.71, lon: -72.93 },
-                { name: "Duitama", lat: 5.82, lon: -73.03 }, { name: "Girardot", lat: 4.3, lon: -74.8 },
-                { name: "Fusagasugá", lat: 4.33, lon: -74.36 }, { name: "Tumaco", lat: 1.8, lon: -78.76 },
-                { name: "Buenaventura", lat: 3.88, lon: -77.03 }, { name: "Palmira", lat: 3.53, lon: -76.3 },
-                { name: "Tuluá", lat: 4.08, lon: -76.19 }, { name: "Buga", lat: 3.9, lon: -76.29 },
-                { name: "Cartago", lat: 4.74, lon: -75.91 }, { name: "Rionegro", lat: 6.15, lon: -75.37 },
-                { name: "Caucasia", lat: 7.98, lon: -75.19 }, { name: "Planeta Rica", lat: 8.4, lon: -75.58 },
-                { name: "Magangué", lat: 9.24, lon: -74.75 }, { name: "El Banco", lat: 9.0, lon: -73.97 },
-                { name: "Ciénaga", lat: 11.0, lon: -74.24 }, { name: "Fundación", lat: 10.51, lon: -74.18 },
-                { name: "San Alberto", lat: 7.76, lon: -73.39 }, { name: "Sabana de Torres", lat: 7.4, lon: -73.49 },
-                { name: "Puerto Boyacá", lat: 5.97, lon: -74.58 }, { name: "Chiquinquirá", lat: 5.61, lon: -73.81 },
-                { name: "Espinal", lat: 4.15, lon: -74.88 }, { name: "Honda", lat: 5.2, lon: -74.74 },
-                { name: "Líbano", lat: 4.92, lon: -75.06 }, { name: "San Vicente del Caguán", lat: 2.11, lon: -74.76 },
-                { name: "Mocoa", lat: 1.14, lon: -76.64 }, { name: "Puerto Asís", lat: 0.5, lon: -76.5 },
-                { name: "Ipiales", lat: 0.82, lon: -77.64 }, { name: "Santander de Quilichao", lat: 3.0, lon: -76.48 },
-                { name: "Jamundí", lat: 3.25, lon: -76.53 }, { name: "Zarzal", lat: 4.38, lon: -76.07 },
-                { name: "La Tebaida", lat: 4.45, lon: -75.78 }, { name: "Calarcá", lat: 4.51, lon: -75.64 },
-                { name: "Santa Rosa de Cabal", lat: 4.86, lon: -75.62 }, { name: "Chinchiná", lat: 4.98, lon: -75.6 },
-                { name: "Aguadas", lat: 5.6, lon: -75.45 }, { name: "Turbo", lat: 8.09, lon: -76.72 },
-                { name: "Tierralta", lat: 8.17, lon: -76.05 }, { name: "Lorica", lat: 9.23, lon: -75.81 },
-                { name: "Sahagún", lat: 8.94, lon: -75.44 }, { name: "Cereté", lat: 8.88, lon: -75.79 },
-                { name: "Corozal", lat: 9.31, lon: -75.29 }, { name: "Plato", lat: 9.78, lon: -74.78 },
-                { name: "Bosconia", lat: 9.96, lon: -73.88 }, { name: "Maicao", lat: 11.37, lon: -72.24 },
-                { name: "Tibú", lat: 8.64, lon: -72.73 }, { name: "Pamplona", lat: 7.37, lon: -72.64 },
-                { name: "Málaga", lat: 6.7, lon: -72.73 }, { name: "Vélez", lat: 6.01, lon: -73.67 },
-                { name: "San Gil", lat: 6.55, lon: -73.13 }
-            ];
-
-            // Colocar 225 marcadores (organizaciones) de forma aleatoria en los municipios
-            for (let i = 0; i < 225; i++) {
-                const municipio = municipios[Math.floor(Math.random() * municipios.length)];
-                const lat = municipio.lat + (Math.random() - 0.5) * 0.5;
-                const lon = municipio.lon + (Math.random() - 0.5) * 0.5;
-
-                if (lat >= colombiaBounds.minLat && lat <= colombiaBounds.maxLat && lon >= colombiaBounds.minLon && lon <= colombiaBounds.maxLon) {
-                    L.marker([lat, lon], { icon: greenIcon }).addTo(map)
-                        .bindPopup(`Organización afiliada a FENALCUP<br>Cerca de ${municipio.name}`);
+        const activateLink = (id) => {
+            navLinks.forEach(link => {
+                link.classList.remove('active-link');
+                if (link.getAttribute('href') === `#${id}`) {
+                    link.classList.add('active-link');
                 }
+            });
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    activateLink(entry.target.id);
+                }
+            });
+        }, { rootMargin: '-30% 0px -70% 0px', threshold: 0 });
+
+        sections.forEach(section => observer.observe(section));
+
+
+        // --- Lógica del Mapa Interactivo ---
+        const mapData = [
+            { dpto: 'Antioquia', org: 45, fam: 1500, prod: 9000, lat: 6.24, lon: -75.57 },
+            { dpto: 'Valle del Cauca', org: 25, fam: 850, prod: 8500, lat: 3.45, lon: -76.53 },
+            { dpto: 'Córdoba', org: 20, fam: 700, prod: 8200, lat: 8.74, lon: -75.88 },
+            { dpto: 'Santander', org: 18, fam: 600, prod: 8800, lat: 7.12, lon: -73.12 },
+            { dpto: 'Meta', org: 15, fam: 550, prod: 9500, lat: 4.14, lon: -73.62 },
+            { dpto: 'Tolima', org: 14, fam: 500, prod: 8000, lat: 4.43, lon: -75.23 },
+            { dpto: 'Nariño', org: 13, fam: 480, prod: 7800, lat: 1.21, lon: -77.27 },
+            { dpto: 'Caldas', org: 12, fam: 450, prod: 8600, lat: 5.06, lon: -75.51 },
+            { dpto: 'Risaralda', org: 11, fam: 420, prod: 8700, lat: 4.81, lon: -75.69 },
+            { dpto: 'Quindío', org: 10, fam: 400, prod: 8900, lat: 4.53, lon: -75.68 },
+            { dpto: 'Cundinamarca', org: 9, fam: 350, prod: 7500, lat: 4.6, lon: -74.08 },
+            { dpto: 'Huila', org: 8, fam: 300, prod: 7600, lat: 2.92, lon: -75.28 },
+            { dpto: 'Cauca', org: 7, fam: 280, prod: 7400, lat: 2.44, lon: -76.61 },
+            { dpto: 'Boyacá', org: 6, fam: 250, prod: 7200, lat: 5.53, lon: -73.36 },
+            { dpto: 'Magdalena', org: 5, fam: 200, prod: 9100, lat: 11.24, lon: -74.19 },
+            { dpto: 'Cesar', org: 4, fam: 150, prod: 8400, lat: 10.46, lon: -73.25 },
+            { dpto: 'Chocó', org: 3, fam: 144, prod: 7000, lat: 5.69, lon: -76.65 }
+        ];
+        
+        const map = L.map('map').setView([4.5709, -74.2973], 5.5);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        mapData.forEach(dpto => {
+            for (let i = 0; i < dpto.org; i++) {
+                const lat = dpto.lat + (Math.random() - 0.5) * 0.8;
+                const lon = dpto.lon + (Math.random() - 0.5) * 0.8;
+                
+                const popupContent = `
+                    <div class="font-sans">
+                        <h4 class="font-bold text-lg text-green-800 border-b pb-1 mb-2">${dpto.dpto}</h4>
+                        <p><strong>Organizaciones:</strong> ${dpto.org}</p>
+                        <p><strong>Familias:</strong> ${dpto.fam}</p>
+                        <p><strong>Prod. Promedio:</strong> ${dpto.prod} kg/ha</p>
+                    </div>
+                `;
+
+                L.circleMarker([lat, lon], {
+                    radius: 5,
+                    color: '#166534', // green-800
+                    fillColor: '#22c55e', // green-500
+                    fillOpacity: 0.8
+                }).addTo(map).bindPopup(popupContent);
             }
         });
+
+        // --- Lógica del Contador ---
+        const counter = document.getElementById('consultas-counter');
+        const animateCounter = (el, to) => {
+            let from = 0;
+            const step = to > from ? 1 : -1;
+            const interval = 2000 / to;
+
+            const counterObserver = new IntersectionObserver((entries) => {
+                if(entries[0].isIntersecting) {
+                    if (from === to) return;
+                    const timer = setInterval(() => {
+                        from += step * Math.ceil(to/100);
+                        if ((step > 0 && from >= to) || (step < 0 && from <= to)) {
+                           from = to;
+                           clearInterval(timer);
+                        }
+                        el.textContent = from;
+                    }, interval);
+                    counterObserver.unobserve(el);
+                }
+            }, {threshold: 0.5});
+            counterObserver.observe(el);
+        };
+        animateCounter(counter, 1247);
+
+        // --- Lógica del Comparador de Precios ---
+        const priceData = [
+            { region: 'Antioquia', quality: 'Exportación', price: 3200 },
+            { region: 'Antioquia', quality: 'Primera', price: 2800 },
+            { region: 'Antioquia', quality: 'Corriente', price: 2400 },
+            { region: 'Eje Cafetero', quality: 'Exportación', price: 3100 },
+            { region: 'Eje Cafetero', quality: 'Primera', price: 2750 },
+            { region: 'Eje Cafetero', quality: 'Corriente', price: 2300 },
+            { region: 'Llanos Orientales', quality: 'Primera', price: 2900 },
+            { region: 'Llanos Orientales', quality: 'Corriente', price: 2500 },
+            { region: 'Costa Caribe', quality: 'Primera', price: 2850 },
+            { region: 'Costa Caribe', quality: 'Corriente', price: 2450 },
+        ];
+        const tableBody = document.getElementById('price-table-body');
+        const regionFilter = document.getElementById('region-filter');
+        const qualityFilter = document.getElementById('quality-filter');
+
+        const renderTable = () => {
+            tableBody.innerHTML = '';
+            const filteredData = priceData.filter(item => 
+                (regionFilter.value === 'all' || item.region === regionFilter.value) &&
+                (qualityFilter.value === 'all' || item.quality === qualityFilter.value)
+            );
+
+            if (filteredData.length === 0) {
+                 tableBody.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-gray-500">No hay datos para esta selección.</td></tr>`;
+                 return;
+            }
+
+            filteredData.forEach(item => {
+                const row = `<tr>
+                    <td class="p-3 border-t">${item.region}</td>
+                    <td class="p-3 border-t">${item.quality}</td>
+                    <td class="p-3 border-t">$ ${item.price.toLocaleString('es-CO')}</td>
+                </tr>`;
+                tableBody.innerHTML += row;
+            });
+        };
+        regionFilter.addEventListener('change', renderTable);
+        qualityFilter.addEventListener('change', renderTable);
+        renderTable();
+
+        // --- Lógica de FAQs ---
+        const faqs = [
+            { q: '¿Cómo controlar la Sigatoka Negra de manera efectiva?', a: 'El manejo integrado es clave. Combine prácticas culturales (deshoje, drenajes), control biológico y, como último recurso, fungicidas de rotación para evitar resistencia. La nutrición balanceada de la planta también aumenta su defensa natural.' },
+            { q: '¿Qué es el "Mal de Panamá" (Fusarium Raza 4) y cómo prevenirlo?', a: 'Es un hongo devastador que vive en el suelo y ataca las raíces. No tiene cura. La prevención es fundamental: use material de siembra certificado y libre de la enfermedad, desinfecte herramientas y calzado al entrar y salir del cultivo, y evite el movimiento de tierra de zonas infectadas.' },
+            { q: '¿Cuál es el punto óptimo de cosecha para exportación?', a: 'Depende del mercado de destino. Generalmente, se busca una "edad" de 9 a 12 semanas después de la floración y un calibre específico (grosor del dedo central). La fruta debe estar "tres cuartos", es decir, verde pero con los filos del fruto ya redondeados.' },
+            { q: '¿Cómo mejorar la vida útil del plátano después de la cosecha?', a: 'El manejo postcosecha es crucial. Evite golpes y heridas durante el corte y transporte. Realice el desmane y lavado en tanques con agua limpia y un desinfectante adecuado. Mantenga la fruta en un lugar fresco y sombreado para reducir la respiración y maduración.' }
+        ];
+        const faqContainer = document.getElementById('faq-container');
+        faqs.forEach((faq, index) => {
+            const faqItem = document.createElement('div');
+            faqItem.className = 'bg-white rounded-lg shadow-sm';
+            faqItem.innerHTML = `
+                <div class="faq-question flex justify-between items-center p-5">
+                    <h4 class="font-semibold text-lg text-gray-800">${faq.q}</h4>
+                    <svg class="w-6 h-6 text-green-700 transition-transform transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                </div>
+                <div class="faq-answer px-5 pb-5 text-gray-600">
+                    <p>${faq.a}</p>
+                </div>
+            `;
+            faqContainer.appendChild(faqItem);
+        });
+
+        document.querySelectorAll('.faq-question').forEach(item => {
+            item.addEventListener('click', event => {
+                const answer = item.nextElementSibling;
+                const icon = item.querySelector('svg');
+                if (answer.style.maxHeight) {
+                    answer.style.maxHeight = null;
+                    icon.style.transform = 'rotate(0deg)';
+                } else {
+                    answer.style.maxHeight = answer.scrollHeight + "px";
+                    icon.style.transform = 'rotate(180deg)';
+                } 
+            });
+        });
+    });
     </script>
 </body>
 </html>
