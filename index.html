@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FENALCUP - Federación Nacional de Cultivadores de Plátano</title>
+    <title>FENALCUP - Federación Nacional de Cultivadores y Productores de Colombia</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,6 +47,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: transform 0.2s;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
         }
         /* Asegura que el mapa tenga una altura definida */
         #map {
@@ -175,16 +179,31 @@
 
     <!-- Botón Flotante de WhatsApp -->
     <a id="contacto" href="https://wa.me/NUMERODETELEFONO?text=Hola,%20quisiera%20información%20sobre%20FENALCUP" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
-        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99 0-3.903-.52-5.586-1.456l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.886-.001 2.269.655 4.357 1.846 6.067l-1.29 4.723 4.833-1.276z" /></svg>
+        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.55C8.71 21.33 10.35 21.8 12.04 21.8H12.05C17.5 21.8 21.95 17.35 21.95 11.9C21.95 9.28 20.94 6.8 19.19 4.99C17.44 3.19 14.95 2 12.04 2ZM12.05 20.1C10.59 20.1 9.16 19.68 7.96 18.9L7.62 18.7L3.98 19.7L5.03 16.17L4.81 15.82C3.97 14.57 3.53 13.14 3.53 11.91C3.53 7.36 7.39 3.6 12.05 3.6C14.23 3.6 16.22 4.48 17.79 6.05C19.36 7.62 20.24 9.61 20.24 11.9C20.24 16.45 16.5 20.1 12.05 20.1ZM16.54 14.53C16.3 14.41 15.13 13.85 14.91 13.77C14.69 13.69 14.53 13.65 14.38 13.89C14.23 14.13 13.75 14.69 13.58 14.85C13.41 15.01 13.25 15.05 13 14.93C12.75 14.81 11.91 14.54 10.92 13.64C10.12 12.91 9.58 12.03 9.42 11.79C9.26 11.55 9.38 11.45 9.5 11.33C9.61 11.22 9.75 11.05 9.87 10.9C10 10.75 10.04 10.63 10.12 10.47C10.2 10.31 10.16 10.19 10.1 10.07C10.04 9.95 9.59 8.78 9.41 8.34C9.24 7.9 9.06 7.94 8.92 7.93H8.52C8.38 7.93 8.14 7.99 7.94 8.19C7.74 8.39 7.26 8.83 7.26 9.95C7.26 11.07 7.98 12.15 8.1 12.27C8.22 12.39 9.6 14.64 11.85 15.58C12.31 15.78 12.65 15.9 12.91 16C13.35 16.14 13.73 16.12 14.03 16.06C14.37 15.98 15.41 15.39 15.61 14.81C15.81 14.23 15.81 13.77 15.75 13.65C15.69 13.53 15.57 13.47 15.33 13.35C15.09 13.23 16.78 14.65 16.54 14.53Z"/>
+        </svg>
     </a>
 
     <!-- Pie de Página -->
     <footer class="bg-gray-800 text-white">
         <div class="container mx-auto px-4 py-8 text-center">
             <p class="font-bold">FENALCUP</p>
-            <p class="text-sm text-gray-400">Federación Nacional de Cultivadores de Plátano</p>
-            <p class="text-sm text-gray-400 mt-2">Uniendo al campo colombiano</p>
-            <p class="text-xs text-gray-500 mt-4">&copy; 2025 FENALCUP. Todos los derechos reservados.</p>
+            <p class="text-sm text-gray-400 mt-2 px-2">FEDERACION NACIONAL DE CULTIVADORES Y PRODUCTORES DE COLOMBIA – FENALCUP</p>
+            
+            <div class="flex justify-center space-x-6 mt-6">
+                <a href="#" aria-label="Facebook de FENALCUP" class="text-gray-400 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v7.005C18.343 21.128 22 16.991 22 12z" />
+                    </svg>
+                </a>
+                <a href="#" aria-label="Instagram de FENALCUP" class="text-gray-400 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.585-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.585-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.07-1.645-.07-4.85s.012-3.585.07-4.85c.149-3.225 1.664-4.771 4.919-4.919C8.415 2.175 8.796 2.163 12 2.163zm0 1.802c-3.143 0-3.505.012-4.73.068-2.693.123-3.996 1.426-4.12 4.12C3.12 9.495 3.108 9.858 3.108 12s.012 2.505.068 3.73c.123 2.693 1.426 3.996 4.12 4.12 1.225.056 1.587.068 4.73.068s3.505-.012 4.73-.068c2.693-.123 3.996-1.426 4.12-4.12.056-1.225.068-1.587.068-4.73s-.012-2.505-.068-3.73c-.123-2.693-1.426-3.996-4.12-4.12C15.505 3.975 15.143 3.965 12 3.965zM12 6.837c-2.846 0-5.163 2.317-5.163 5.163s2.317 5.163 5.163 5.163 5.163-2.317 5.163-5.163-2.317-5.163-5.163-5.163zm0 8.529c-1.856 0-3.366-1.51-3.366-3.366s1.51-3.366 3.366-3.366 3.366 1.51 3.366 3.366-1.51 3.366-3.366 3.366zm6.406-6.845c-.796 0-1.441.645-1.441 1.44s.645 1.441 1.441 1.441 1.441-.645 1.441-1.441-.645-1.44-1.441-1.44z"/>
+                    </svg>
+                </a>
+            </div>
+
+            <p class="text-xs text-gray-500 mt-6">&copy; 2025 FENALCUP. Todos los derechos reservados.</p>
         </div>
     </footer>
 
@@ -234,7 +253,6 @@
                 { name: "Santa Marta", lat: 11.24, lon: -74.19 }, { name: "Sincelejo", lat: 9.3, lon: -75.39 },
                 { name: "Tunja", lat: 5.53, lon: -73.36 }, { name: "Valledupar", lat: 10.46, lon: -73.25 },
                 { name: "Villavicencio", lat: 4.14, lon: -73.62 }, { name: "Yopal", lat: 5.33, lon: -72.39 },
-                // Añadir más municipios hasta completar 85 para una mejor distribución
                 { name: "Saravena", lat: 6.95, lon: -71.87 }, { name: "Tame", lat: 6.46, lon: -71.74 },
                 { name: "Aguachica", lat: 8.3, lon: -73.61 }, { name: "Ocaña", lat: 8.23, lon: -73.35 },
                 { name: "Pitalito", lat: 1.85, lon: -76.04 }, { name: "Garzón", lat: 2.19, lon: -75.62 },
@@ -268,15 +286,10 @@
 
             // Colocar 225 marcadores (organizaciones) de forma aleatoria en los municipios
             for (let i = 0; i < 225; i++) {
-                // Elegir un municipio al azar de la lista
                 const municipio = municipios[Math.floor(Math.random() * municipios.length)];
-                
-                // Añadir una pequeña variación a las coordenadas para que no se superpongan exactamente
-                // y se distribuyan alrededor del municipio.
-                const lat = municipio.lat + (Math.random() - 0.5) * 0.5; // Variación de hasta ~55km
+                const lat = municipio.lat + (Math.random() - 0.5) * 0.5;
                 const lon = municipio.lon + (Math.random() - 0.5) * 0.5;
 
-                // Verificar que el punto esté dentro de los límites de Colombia antes de añadirlo
                 if (lat >= colombiaBounds.minLat && lat <= colombiaBounds.maxLat && lon >= colombiaBounds.minLon && lon <= colombiaBounds.maxLon) {
                     L.marker([lat, lon], { icon: greenIcon }).addTo(map)
                         .bindPopup(`Organización afiliada a FENALCUP<br>Cerca de ${municipio.name}`);
