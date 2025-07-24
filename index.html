@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -49,22 +50,38 @@
     <!-- Encabezado -->
     <header class="bg-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <!-- Logo -->
             <div class="flex items-center">
                 <svg class="h-8 w-8 text-green-700 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
                 </svg>
                 <h1 class="text-xl font-bold text-green-800">FENALCUP</h1>
             </div>
+
+            <!-- Menú de Escritorio -->
+            <nav class="hidden md:flex items-center space-x-6">
+                <a href="#" class="text-gray-600 hover:text-green-700 font-semibold">Inicio</a>
+                <a href="#quienes-somos" class="text-gray-600 hover:text-green-700 font-semibold">¿Quiénes Somos?</a>
+                <a href="#herramientas" class="text-gray-600 hover:text-green-700 font-semibold">Herramientas</a>
+                <a href="#noticias" class="text-gray-600 hover:text-green-700 font-semibold">Noticias</a>
+                <a href="#contacto" class="text-gray-600 hover:text-green-700 font-semibold">Contacto</a>
+            </nav>
+
+            <!-- Botón del Menú Móvil -->
             <button id="menu-btn" class="md:hidden">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
             </button>
         </div>
-        <!-- Menú móvil (oculto por defecto) -->
+        
+        <!-- Menú móvil desplegable (oculto por defecto) -->
         <nav id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-4 border-t">
-            <a href="#" class="block py-2 text-gray-700 hover:bg-gray-100 rounded">Inicio</a>
-            <a href="#" class="block py-2 text-gray-700 hover:bg-gray-100 rounded">¿Quiénes Somos?</a>
-            <a href="#" class="block py-2 text-gray-700 hover:bg-gray-100 rounded">Noticias</a>
-            <a href="#" class="block py-2 text-gray-700 hover:bg-gray-100 rounded">Contacto</a>
+            <a href="#" class="block py-2 px-2 text-gray-700 hover:bg-gray-100 rounded">Inicio</a>
+            <a href="#quienes-somos" class="block py-2 px-2 text-gray-700 hover:bg-gray-100 rounded">¿Quiénes Somos?</a>
+            <a href="#herramientas" class="block py-2 px-2 text-gray-700 hover:bg-gray-100 rounded">Apoyo Técnico</a>
+            <a href="#herramientas" class="block py-2 px-2 text-gray-700 hover:bg-gray-100 rounded">Precios y Mercado</a>
+            <a href="#herramientas" class="block py-2 px-2 text-gray-700 hover:bg-gray-100 rounded">Calidad</a>
+            <a href="#noticias" class="block py-2 px-2 text-gray-700 hover:bg-gray-100 rounded">Noticias</a>
+            <a href="#contacto" class="block py-2 px-2 text-gray-700 hover:bg-gray-100 rounded">Contacto</a>
         </nav>
     </header>
 
@@ -101,9 +118,20 @@
                 </div>
             </div>
         </section>
+        
+        <!-- Quiénes Somos -->
+        <section id="quienes-somos" class="bg-white">
+            <div class="container mx-auto px-4 py-12">
+                <h3 class="text-2xl font-bold text-center mb-4 text-green-800">Nuestra Historia: Nacimos de la Tierra y la Necesidad</h3>
+                <div class="text-center text-gray-700 max-w-3xl mx-auto space-y-4">
+                    <p>No somos una federación creada desde un escritorio. FENALCUP nació del esfuerzo y la unión de las bases campesinas, en los territorios donde el plátano es más que un cultivo: es el sustento, la identidad y la vida para miles de familias.</p>
+                    <p>A pesar de nuestra importancia para la seguridad alimentaria y la economía rural, hemos enfrentado el abandono. Cada desafío y cada necesidad ignorada ha forjado nuestro carácter. Existimos para luchar por el reconocimiento y el apoyo que nuestro sector merece, demostrando que la unión del campo es la fuerza que transforma la realidad.</p>
+                </div>
+            </div>
+        </section>
 
-        <!-- Secciones Principales -->
-        <section class="container mx-auto px-4 py-12">
+        <!-- Secciones Principales (Herramientas) -->
+        <section id="herramientas" class="container mx-auto px-4 py-12">
             <h3 class="text-2xl font-bold text-center mb-8">Una Herramienta para Nuestra Gente</h3>
             <div class="grid grid-cols-2 gap-4">
                 <!-- Card: Apoyo Técnico -->
@@ -127,7 +155,7 @@
                     <p class="text-xs text-gray-500">Información actual</p>
                 </a>
                 <!-- Card: Noticias y Gestión -->
-                <a href="#" class="card bg-white p-4 rounded-lg shadow text-center">
+                <a id="noticias" href="#" class="card bg-white p-4 rounded-lg shadow text-center">
                     <div class="flex justify-center mb-2">
                          <svg class="h-10 w-10 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 18V6.375c0-.621.504-1.125 1.125-1.125H9.75" />
@@ -162,7 +190,7 @@
     </main>
 
     <!-- Botón Flotante de WhatsApp -->
-    <a href="https://wa.me/NUMERODETELEFONO?text=Hola,%20quisiera%20información%20sobre%20FENALCUP" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
+    <a id="contacto" href="https://wa.me/NUMERODETELEFONO?text=Hola,%20quisiera%20información%20sobre%20FENALCUP" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
         <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
             <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99 0-3.903-.52-5.586-1.456l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.886-.001 2.269.655 4.357 1.846 6.067l-1.29 4.723 4.833-1.276z" />
         </svg>
@@ -185,6 +213,13 @@
 
         menuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
+        });
+
+        // Script para cerrar el menú al hacer clic en un enlace
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
         });
     </script>
 </body>
